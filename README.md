@@ -356,6 +356,16 @@ Design and evidence: `docs/WEEK5_DESIGN_NOTE.md`, `docs/WEEK5_TEST_RECORD.md`.
 
 Read `docs/TEACHING_ROADMAP.md` for the weekly improvement plan.
 
+## AWS hosted demo (Week 6, part 2)
+
+- Live site: https://13-212-160-135.sslip.io (single EC2 instance, AWS `ap-southeast-1`)
+- Decision record: `docs/aws/DECISION_RECORD.md` · Architecture: `docs/aws/aws-architecture.png`
+- Resource register, credits and removal plan: `docs/aws/RESOURCE_REGISTER.md`
+- Hosted verification and the two improvements: `docs/aws/HOSTED_VERIFICATION.md` · Release note: `docs/aws/RELEASE_NOTE.md`
+- Deployment files: `deploy/ec2/` (launch from CloudShell, bootstrap, Caddy, systemd, update, smoke test)
+
+Checkout now requires an account: open **Sign in → Create an account** (fictional details only).
+
 ## Week 6: quality and deployment
 
 - Test record with defects and fixes: `docs/week6/TEST_RECORD.md`

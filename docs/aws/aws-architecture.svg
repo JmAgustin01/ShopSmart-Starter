@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="660" viewBox="0 0 1200 660" font-family="Inter,Segoe UI,Arial,sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#334155"/></marker></defs>
+<rect width="1200" height="660" fill="#fff"/>
+<text x="40" y="40" font-size="24" font-weight="700" fill="#0f172a">ShopSmart on AWS: single EC2 host (ap-southeast-1, Singapore)</text>
+<text x="40" y="66" font-size="14" fill="#475569">Solid arrows cross the internet (HTTPS). Everything inside the EC2 box talks over the instance's loopback interface (127.0.0.1).</text>
+<rect x="40" y="250" width="200" height="120" rx="14" fill="#f1f5f9" stroke="#334155" stroke-width="2"/>
+<text x="140" y="292" text-anchor="middle" font-size="18" font-weight="700" fill="#0f172a">Browser</text>
+<text x="140" y="316" text-anchor="middle" font-size="13" fill="#334155">visitor / fictional</text>
+<text x="140" y="336" text-anchor="middle" font-size="13" fill="#334155">test customers</text>
+<rect x="320" y="100" width="840" height="470" rx="18" fill="#fffbeb" stroke="#d97706" stroke-width="2" stroke-dasharray="8 6"/>
+<text x="340" y="128" font-size="14" font-weight="700" fill="#92400e">Security group shopsmart-web · in: 443/80 from anywhere · 22 from EC2 Instance Connect only · 3000/5432 closed</text>
+<rect x="340" y="145" width="800" height="405" rx="14" fill="#fff" stroke="#f59e0b" stroke-width="2"/>
+<text x="360" y="172" font-size="16" font-weight="700" fill="#0f172a">EC2 t3.micro · Ubuntu 24.04 · instance shopsmart-demo · 20 GB gp3 · https://&lt;public-ip&gt;.sslip.io</text>
+<rect x="370" y="200" width="270" height="140" rx="12" fill="#ecfdf5" stroke="#0f766e" stroke-width="2"/>
+<text x="505" y="232" text-anchor="middle" font-size="17" font-weight="700" fill="#0f172a">Caddy  :443 / :80</text>
+<text x="505" y="256" text-anchor="middle" font-size="12.5" fill="#334155">automatic HTTPS certificate</text>
+<text x="505" y="276" text-anchor="middle" font-size="12.5" fill="#334155">/  → Vite build files</text>
+<text x="505" y="296" text-anchor="middle" font-size="12.5" fill="#334155">(SPA rewrite to index.html)</text>
+<text x="505" y="316" text-anchor="middle" font-size="12.5" fill="#334155">/api/* → 127.0.0.1:3000</text>
+<rect x="720" y="200" width="390" height="140" rx="12" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+<text x="915" y="232" text-anchor="middle" font-size="17" font-weight="700" fill="#0f172a">Express API (Node 22, systemd)</text>
+<text x="915" y="256" text-anchor="middle" font-size="12.5" fill="#334155">listens on 127.0.0.1:3000 only</text>
+<text x="915" y="276" text-anchor="middle" font-size="12.5" fill="#334155">validation · sessions · order ownership</text>
+<text x="915" y="296" text-anchor="middle" font-size="12.5" fill="#334155">assistant (catalog-grounded)</text>
+<text x="915" y="316" text-anchor="middle" font-size="12.5" fill="#334155">restarts automatically, starts on boot</text>
+<rect x="720" y="395" width="390" height="130" rx="12" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+<text x="915" y="428" text-anchor="middle" font-size="17" font-weight="700" fill="#0f172a">PostgreSQL 16 (same instance)</text>
+<text x="915" y="452" text-anchor="middle" font-size="12.5" fill="#334155">localhost:5432 only · data on the EBS volume</text>
+<text x="915" y="472" text-anchor="middle" font-size="12.5" fill="#334155">products, users, sessions, orders</text>
+<text x="915" y="492" text-anchor="middle" font-size="12.5" fill="#334155">schema: prisma migrate deploy</text>
+<rect x="370" y="395" width="270" height="130" rx="12" fill="#f8fafc" stroke="#94a3b8"/>
+<text x="385" y="420" font-size="13" font-weight="700" fill="#0f172a">/etc/shopsmart/api.env (mode 640)</text>
+<text x="385" y="442" font-size="12" fill="#b42318" font-family="monospace">DATABASE_URL  (generated on</text>
+<text x="385" y="458" font-size="12" fill="#b42318" font-family="monospace">  the instance, never in git)</text>
+<text x="385" y="476" font-size="12" fill="#b42318" font-family="monospace">GEMINI_API_KEY (empty: AI off)</text>
+<text x="385" y="494" font-size="12" fill="#0f172a" font-family="monospace">NODE_ENV=production HOST=127.0.0.1</text>
+<text x="385" y="512" font-size="12" fill="#0f172a" font-family="monospace">FRONTEND_URL TRUST_PROXY=1</text>
+<line x1="240" y1="300" x2="368" y2="270" stroke="#334155" stroke-width="2.6" marker-end="url(#a)"/>
+<text x="250" y="262" font-size="12.5" fill="#334155">① HTTPS 443</text>
+<line x1="640" y1="270" x2="718" y2="270" stroke="#334155" stroke-width="2.4" stroke-dasharray="6 5" marker-end="url(#a)"/>
+<text x="679" y="262" text-anchor="middle" font-size="11.5" fill="#334155">② HTTP</text>
+<text x="679" y="290" text-anchor="middle" font-size="11" fill="#64748b">loopback</text>
+<line x1="915" y1="340" x2="915" y2="393" stroke="#334155" stroke-width="2.4" stroke-dasharray="6 5" marker-end="url(#a)"/>
+<text x="925" y="372" font-size="11.5" fill="#334155">③ SQL over loopback</text>
+<line x1="718" y1="330" x2="642" y2="400" stroke="#94a3b8" stroke-width="1.6" stroke-dasharray="3 4"/>
+<text x="40" y="605" font-size="13" fill="#475569">Optional AI provider: not used in this release (AI_PROVIDER=off). If enabled, only the API calls it over HTTPS with the key from api.env; the browser never sees the key.</text>
+<text x="40" y="628" font-size="13" fill="#475569">The browser never reaches PostgreSQL or port 3000. No secret appears in the repository, user data script, frontend bundle or screenshots.</text>
+</svg></body></html>
