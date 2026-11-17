@@ -1,8 +1,10 @@
 [Unit]
 Description=ShopSmart Express API
 After=network-online.target postgresql.service
-Wants=network-online.target
-Requires=postgresql.service
+# Wants, not Requires: with Requires, stopping or restarting PostgreSQL also stopped the API and it
+# stayed down (found in the hosted outage test). Now the API keeps running, /api/health reports 503
+# while the database is down, and requests work again as soon as PostgreSQL is back.
+Wants=network-online.target postgresql.service
 
 [Service]
 Type=simple
