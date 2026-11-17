@@ -3,7 +3,9 @@ import { createApp } from './app.js';
 import { prisma } from './lib/prisma.js';
 
 const port = Number(process.env.PORT || 3000);
-const server = createApp().listen(port, () => console.log(`ShopSmart API running at http://localhost:${port}`));
+// On EC2, HOST=127.0.0.1 keeps the API reachable only through Caddy (HTTPS); port 3000 is never public.
+const host = process.env.HOST || undefined;
+const server = createApp().listen(port, host, () => console.log(`ShopSmart API running at http://${host || 'localhost'}:${port}`));
 
 async function shutdown(signal) {
   console.log(`\n${signal} received. Closing ShopSmart API.`);

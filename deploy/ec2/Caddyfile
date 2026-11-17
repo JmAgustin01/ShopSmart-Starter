@@ -1,0 +1,18 @@
+# Public entry point: ports 80 and 443 only. Caddy gets and renews the HTTPS certificate itself.
+__SITE_HOST__ {
+	encode gzip
+	# API: forwarded to Express on the instance's loopback interface (port 3000 is never public).
+	handle /api/* {
+		reverse_proxy 127.0.0.1:3000
+	}
+	# Frontend: built Vite files. Unknown paths fall back to index.html so a refresh on
+	# /cart, /account or /products/2 still opens the React app (single-page-app rewrite).
+	handle {
+		root * /var/www/shopsmart
+		try_files {path} /index.html
+		file_server
+	}
+	log {
+		output file /var/log/caddy/shopsmart-access.log
+	}
+}

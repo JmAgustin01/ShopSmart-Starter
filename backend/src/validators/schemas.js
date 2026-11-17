@@ -16,3 +16,17 @@ export const orderSchema = z.object({
 export const assistantQuestionSchema = z.object({
   question: z.string().trim().min(3).max(300)
 });
+
+// Week 6: customer accounts. Emails are stored in lower case so sign-in is not case-sensitive.
+const accountEmail = z.string().trim().toLowerCase().pipe(z.email().max(254));
+
+export const registerSchema = z.object({
+  name: z.string().trim().min(2).max(80),
+  email: accountEmail,
+  password: z.string().min(8).max(72)
+});
+
+export const loginSchema = z.object({
+  email: accountEmail,
+  password: z.string().min(1).max(72)
+});

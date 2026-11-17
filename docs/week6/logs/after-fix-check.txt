@@ -1,0 +1,375 @@
+
+> shopsmart-starter@1.0.0 check
+> npm run lint --workspace frontend && npm run lint --workspace backend && npm run test && npm run build
+
+
+> shopsmart-frontend@1.0.0 lint
+> eslint .
+
+
+> shopsmart-backend@1.0.0 lint
+> eslint .
+
+
+> shopsmart-starter@1.0.0 test
+> npm run test --workspace frontend && npm run test --workspace backend
+
+
+> shopsmart-frontend@1.0.0 test
+> vitest run
+
+
+ RUN  v3.2.7 ./frontend
+
+ ✓ src/utils/orderErrors.test.js (3 tests) 4ms
+ ✓ src/utils/cart.test.js (5 tests) 4ms
+
+ Test Files  2 passed (2)
+      Tests  8 passed (8)
+   Start at  14:44:29
+   Duration  495ms (transform 36ms, setup 0ms, collect 52ms, tests 8ms, environment 0ms, prepare 122ms)
+
+
+> shopsmart-backend@1.0.0 test
+> node --test
+
+TAP version 13
+# GET /api/health 200 2.385 ms
+# Subtest: health reports ok when the database answers
+ok 1 - health reports ok when the database answers
+  ---
+  duration_ms: 49.37267
+  type: 'test'
+  ...
+# GET /api/health 503 0.490 ms
+# Subtest: health returns 503 when the database is unreachable (was: 200 ok)
+ok 2 - health returns 503 when the database is unreachable (was: 200 ok)
+  ---
+  duration_ms: 24.071527
+  type: 'test'
+  ...
+# [undefined] SyntaxError: Unexpected end of JSON input
+#     at JSON.parse (<anonymous>)
+#     at parse (./node_modules/body-parser/lib/types/json.js:91:21)
+#     at ./node_modules/body-parser/lib/read.js:162:18
+#     at AsyncResource.runInAsyncScope (node:async_hooks:214:14)
+#     at invokeCallback (./node_modules/raw-body/index.js:238:16)
+#     at done (./node_modules/raw-body/index.js:227:7)
+#     at IncomingMessage.onEnd (./node_modules/raw-body/index.js:287:7)
+#     at IncomingMessage.emit (node:events:519:28)
+#     at endReadableNT (node:internal/streams/readable:1698:12)
+#     at process.processTicksAndRejections (node:internal/process/task_queues:89:21) {
+#   expose: true,
+#   statusCode: 400,
+#   status: 400,
+#   body: '{"customerName": ',
+#   type: 'entity.parse.failed'
+# }
+# Subtest: malformed JSON returns 400 INVALID_JSON (was: 400 INTERNAL_ERROR)
+ok 3 - malformed JSON returns 400 INVALID_JSON (was: 400 INTERNAL_ERROR)
+  ---
+  duration_ms: 17.118169
+  type: 'test'
+  ...
+# Subtest: unexpected errors do not expose internal codes such as Prisma P1017
+ok 4 - unexpected errors do not expose internal codes such as Prisma P1017
+  ---
+  duration_ms: 0.756307
+  type: 'test'
+  ...
+# Subtest: parseBudget extracts a peso budget
+ok 5 - parseBudget extracts a peso budget
+  ---
+  duration_ms: 1.087709
+  type: 'test'
+  ...
+# Subtest: rankProducts respects the budget
+ok 6 - rankProducts respects the budget
+  ---
+  duration_ms: 0.881671
+  type: 'test'
+  ...
+# Subtest: assistant response contains traceable sources
+ok 7 - assistant response contains traceable sources
+  ---
+  duration_ms: 13.121111
+  type: 'test'
+  ...
+# Subtest: parseBudget ignores model numbers such as 1080p
+ok 8 - parseBudget ignores model numbers such as 1080p
+  ---
+  duration_ms: 0.229835
+  type: 'test'
+  ...
+# Subtest: parseBudget reads "1500 pesos" and "under php 900"
+ok 9 - parseBudget reads "1500 pesos" and "under php 900"
+  ---
+  duration_ms: 0.10653
+  type: 'test'
+  ...
+# Subtest: catalog match: keyboard below ₱2,000 selects the real keyboard with a numeric price
+ok 10 - catalog match: keyboard below ₱2,000 selects the real keyboard with a numeric price
+  ---
+  duration_ms: 0.186215
+  type: 'test'
+  ...
+# Subtest: no match: an absent category returns nothing (was: every product)
+ok 11 - no match: an absent category returns nothing (was: every product)
+  ---
+  duration_ms: 0.113578
+  type: 'test'
+  ...
+# Subtest: availability: a stock 0 product is never selected
+ok 12 - availability: a stock 0 product is never selected
+  ---
+  duration_ms: 1.344922
+  type: 'test'
+  ...
+# Subtest: inactive products are never selected
+ok 13 - inactive products are never selected
+  ---
+  duration_ms: 0.272332
+  type: 'test'
+  ...
+# Subtest: over budget is reported honestly
+ok 14 - over budget is reported honestly
+  ---
+  duration_ms: 0.314413
+  type: 'test'
+  ...
+# Subtest: plural and synonym words still match
+ok 15 - plural and synonym words still match
+  ---
+  duration_ms: 0.285386
+  type: 'test'
+  ...
+# Subtest: no match does not call the provider and returns no products or sources
+ok 16 - no match does not call the provider and returns no products or sources
+  ---
+  duration_ms: 0.249952
+  type: 'test'
+  ...
+# Subtest: valid AI draft is accepted and products come from the database
+ok 17 - valid AI draft is accepted and products come from the database
+  ---
+  duration_ms: 1.855061
+  type: 'test'
+  ...
+# Subtest: draft with invented product id is replaced by the verified rule answer
+ok 18 - draft with invented product id is replaced by the verified rule answer
+  ---
+  duration_ms: 0.851564
+  type: 'test'
+  ...
+# Subtest: draft with wrong price is replaced by the verified rule answer
+ok 19 - draft with wrong price is replaced by the verified rule answer
+  ---
+  duration_ms: 0.441945
+  type: 'test'
+  ...
+# Subtest: draft with invented spec number is replaced by the verified rule answer
+ok 20 - draft with invented spec number is replaced by the verified rule answer
+  ---
+  duration_ms: 0.431632
+  type: 'test'
+  ...
+# Subtest: draft with invented feature is replaced by the verified rule answer
+ok 21 - draft with invented feature is replaced by the verified rule answer
+  ---
+  duration_ms: 0.361561
+  type: 'test'
+  ...
+# Subtest: draft with invented policy is replaced by the verified rule answer
+ok 22 - draft with invented policy is replaced by the verified rule answer
+  ---
+  duration_ms: 0.26883
+  type: 'test'
+  ...
+# Subtest: draft with availability contradiction is replaced by the verified rule answer
+ok 23 - draft with availability contradiction is replaced by the verified rule answer
+  ---
+  duration_ms: 0.403258
+  type: 'test'
+  ...
+# Subtest: draft with wrong stock claim is replaced by the verified rule answer
+ok 24 - draft with wrong stock claim is replaced by the verified rule answer
+  ---
+  duration_ms: 0.166212
+  type: 'test'
+  ...
+# Subtest: draft with budget passed off as price is replaced by the verified rule answer
+ok 25 - draft with budget passed off as price is replaced by the verified rule answer
+  ---
+  duration_ms: 0.336775
+  type: 'test'
+  ...
+# Subtest: draft naming a product it does not recommend is rejected
+ok 26 - draft naming a product it does not recommend is rejected
+  ---
+  duration_ms: 0.20673
+  type: 'test'
+  ...
+# Subtest: provider failure (timeout) falls back to rules with a notice
+ok 27 - provider failure (timeout) falls back to rules with a notice
+  ---
+  duration_ms: 1.259009
+  type: 'test'
+  ...
+# Subtest: provider failure (rate_limited) falls back to rules with a notice
+ok 28 - provider failure (rate_limited) falls back to rules with a notice
+  ---
+  duration_ms: 0.306583
+  type: 'test'
+  ...
+# Subtest: provider failure (unavailable) falls back to rules with a notice
+ok 29 - provider failure (unavailable) falls back to rules with a notice
+  ---
+  duration_ms: 0.145523
+  type: 'test'
+  ...
+# Subtest: provider failure (invalid_format) falls back to rules with a notice
+ok 30 - provider failure (invalid_format) falls back to rules with a notice
+  ---
+  duration_ms: 0.105385
+  type: 'test'
+  ...
+# Subtest: provider failure (not_configured) falls back to rules with a notice
+ok 31 - provider failure (not_configured) falls back to rules with a notice
+  ---
+  duration_ms: 0.101904
+  type: 'test'
+  ...
+# Subtest: an unexpected provider bug also falls back instead of crashing
+ok 32 - an unexpected provider bug also falls back instead of crashing
+  ---
+  duration_ms: 0.260495
+  type: 'test'
+  ...
+# Subtest: budget may be repeated only as the budget, and correct stock claims pass
+ok 33 - budget may be repeated only as the budget, and correct stock claims pass
+  ---
+  duration_ms: 0.501166
+  type: 'test'
+  ...
+# Subtest: contact details are removed before the question reaches the provider
+ok 34 - contact details are removed before the question reaches the provider
+  ---
+  duration_ms: 0.381425
+  type: 'test'
+  ...
+# Subtest: Gemini 2.5 Flash gets thinking switched off so the JSON is not cut short
+ok 35 - Gemini 2.5 Flash gets thinking switched off so the JSON is not cut short
+  ---
+  duration_ms: 0.119155
+  type: 'test'
+  ...
+# Subtest: parseDraft rejects non-JSON and wrong shapes
+ok 36 - parseDraft rejects non-JSON and wrong shapes
+  ---
+  duration_ms: 0.544954
+  type: 'test'
+  ...
+# Subtest: provider request keeps the key in a header and sends only product facts
+ok 37 - provider request keeps the key in a header and sends only product facts
+  ---
+  duration_ms: 15.350525
+  type: 'test'
+  ...
+# Subtest: provider client maps HTTP 429, 500, network and timeout errors
+ok 38 - provider client maps HTTP 429, 500, network and timeout errors
+  ---
+  duration_ms: 51.613604
+  type: 'test'
+  ...
+# Subtest: provider error text is kept for diagnosis but never includes the key
+ok 39 - provider error text is kept for diagnosis but never includes the key
+  ---
+  duration_ms: 1.084434
+  type: 'test'
+  ...
+# Subtest: price claims written in words are rejected
+ok 40 - price claims written in words are rejected
+  ---
+  duration_ms: 6.633195
+  type: 'test'
+  ...
+# Subtest: a normal answer with the real price still passes
+ok 41 - a normal answer with the real price still passes
+  ---
+  duration_ms: 0.767198
+  type: 'test'
+  ...
+# Subtest: a word that is part of the product facts ("hands-free") is allowed
+ok 42 - a word that is part of the product facts ("hands-free") is allowed
+  ---
+  duration_ms: 0.302437
+  type: 'test'
+  ...
+# Subtest: the injection question ends with the catalog answer, not the AI claim
+ok 43 - the injection question ends with the catalog answer, not the AI claim
+  ---
+  duration_ms: 20.056926
+  type: 'test'
+  ...
+# Subtest: no search term returns only the active condition
+ok 44 - no search term returns only the active condition
+  ---
+  duration_ms: 1.786019
+  type: 'test'
+  ...
+# Subtest: a search term matches the name or the description
+ok 45 - a search term matches the name or the description
+  ---
+  duration_ms: 0.249939
+  type: 'test'
+  ...
+# Subtest: a repeated search parameter (array) is ignored, not a crash
+ok 46 - a repeated search parameter (array) is ignored, not a crash
+  ---
+  duration_ms: 0.273584
+  type: 'test'
+  ...
+# Subtest: a valid classroom order passes validation
+ok 47 - a valid classroom order passes validation
+  ---
+  duration_ms: 3.245429
+  type: 'test'
+  ...
+# Subtest: duplicate products fail order validation
+ok 48 - duplicate products fail order validation
+  ---
+  duration_ms: 0.427336
+  type: 'test'
+  ...
+# Subtest: an oversized assistant question fails validation
+ok 49 - an oversized assistant question fails validation
+  ---
+  duration_ms: 0.487603
+  type: 'test'
+  ...
+1..49
+# tests 49
+# suites 0
+# pass 49
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 754.105485
+
+> shopsmart-starter@1.0.0 build
+> npm run build --workspace frontend
+
+
+> shopsmart-frontend@1.0.0 build
+> vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 53 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.49 kB │ gzip:  0.30 kB
+dist/assets/index-B1deKIvM.css    4.80 kB │ gzip:  1.63 kB
+dist/assets/index-6RTDq9nH.js   275.65 kB │ gzip: 87.46 kB
+✓ built in 1.59s

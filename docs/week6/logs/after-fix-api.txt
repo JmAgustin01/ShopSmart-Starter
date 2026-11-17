@@ -1,0 +1,10 @@
+### health
+{"status":"ok","database":"ok"} [HTTP 200]
+### M1 malformed JSON
+{"error":{"code":"INVALID_JSON","message":"Request body must be valid JSON."}} [HTTP 400]
+### DB down: health
+{"status":"error","database":"unreachable"} [HTTP 503]
+### DB down: products
+{"error":{"code":"INTERNAL_ERROR","message":"The server could not complete the request.","traceId":"ee186135-a4b7-41ee-8fad-b5732f543993"}} [HTTP 500]
+### DB back: health
+{"status":"ok","database":"ok"} [HTTP 200]

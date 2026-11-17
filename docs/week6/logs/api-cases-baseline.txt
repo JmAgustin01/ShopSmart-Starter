@@ -1,0 +1,89 @@
+orders before: 0
+### S1 search keyboard
+$ curl http://localhost:3000/api/products?search=keyboard
+{"products":[{"id":2,"name":"Compact Mechanical Keyboard","description":"Hot-swappable compact keyboard with tactile switches.","category":"Accessories","emoji":"⌨️","price":1850,"stock":8,"active":true,"createdAt":"2026-11-16T06:38:54.663Z","updatedAt":"2026-11-16T06:38:54.663Z"}]}
+[HTTP 200]
+
+### S2 search Keyboard uppercase
+$ curl http://localhost:3000/api/products?search=KEYBOARD
+{"products":[{"id":2,"name":"Compact Mechanical Keyboard","description":"Hot-swappable compact keyboard with tactile switches.","category":"Accessories","emoji":"⌨️","price":1850,"stock":8,"active":true,"createdAt":"2026-11-16T06:38:54.663Z","updatedAt":"2026-11-16T06:38:54.663Z"}]}
+[HTTP 200]
+
+### S3 search no match
+$ curl http://localhost:3000/api/products?search=drone
+{"products":[]}
+[HTTP 200]
+
+### S4 repeated search param
+$ curl http://localhost:3000/api/products?search=a&search=b
+{"products":[{"id":1,"name":"Wireless Mouse","description":"Quiet wireless mouse with adjustable sensitivity and USB receiver.","category":"Accessories","emoji":"🖱️","price":650,"stock":12,"active":true,"createdAt":"2026-11-16T06:38:54.663Z","updatedAt":"2026-11-16T06:38:54.663Z"},{"id":2,"name":"Compact Mechanical Keyboard","description":"Hot-swappable compact keyboard with tactile switches.","category":"Accessories","emoji":"⌨️","price":1850,"stock":8,"active":true,"createdAt":"2026-11-16T06:38:54.663Z","updatedAt":"2026-11-16T06:38:54.663Z"},{"id":3,"name":"USB-C Study Lamp","description":"Adjustable desk lamp with three brightness levels.","category":"Study","emoji":"💡","price":900,"stock":10,"active":true,"createdAt":"2026-11-16T06:38:54.663Z","updatedAt":"2026-11-16T06:38:54.663Z"},{"id":4,"name":"1080p Webcam","description":"Full HD webcam with privacy cover and built-in microphone.","category":"Video","emoji":"📷","price":1450,"stock":6,"active":true,"createdAt":"2026-11-16T06:38:54.663Z","updatedAt":"2026-11-16T06:38:54.663Z"},{"id":5,"name":"Laptop Stand","description":"Foldable aluminum stand for laptops up to 16 inches.","category":"Study","emoji":"💻","price":1200,"stock":9,"active":true,"createdAt":"2026-11-16T06:38:54.663Z","updatedAt":"2026-11-16T06:38:54.663Z"},{"id":6,"name":"USB Headset","description":"Over-ear headset with noise-reducing boom microphone.","category":"Audio","emoji":"🎧","price":1350,"stock":7,"active":true,"createdAt":"2026-11-16T06:38:54.663Z","updatedAt":"2026-11-16T06:38:54.663Z"}]}
+[HTTP 200]
+
+### P1 product 2
+$ curl http://localhost:3000/api/products/2
+{"id":2,"name":"Compact Mechanical Keyboard","description":"Hot-swappable compact keyboard with tactile switches.","category":"Accessories","emoji":"⌨️","price":1850,"stock":8,"active":true,"createdAt":"2026-11-16T06:38:54.663Z","updatedAt":"2026-11-16T06:38:54.663Z"}
+[HTTP 200]
+
+### P2 product abc
+$ curl http://localhost:3000/api/products/abc
+{"error":{"code":"INVALID_PRODUCT_ID","message":"Product ID must be a positive integer."}}
+[HTTP 400]
+
+### P3 product 999
+$ curl http://localhost:3000/api/products/999
+{"error":{"code":"PRODUCT_NOT_FOUND","message":"Product could not be found."}}
+[HTTP 404]
+
+### O1 valid order
+$ curl -H Content-Type: application/json -X POST http://localhost:3000/api/orders -d {"customerName":"Juan Dela Test","email":"juan.test@example.com","address":"123 Fictional St, Test City","items":[{"productId":1,"quantity":2},{"productId":2,"quantity":1}]}
+{"id":1,"customerName":"Juan Dela Test","email":"juan.test@example.com","address":"123 Fictional St, Test City","status":"PENDING","total":3150,"createdAt":"2026-11-16T06:39:32.069Z","items":[{"id":1,"orderId":1,"productId":1,"quantity":2,"unitPrice":650},{"id":2,"orderId":1,"productId":2,"quantity":1,"unitPrice":1850}]}
+[HTTP 201]
+
+### O2 invalid email
+$ curl -H Content-Type: application/json -X POST http://localhost:3000/api/orders -d {"customerName":"Juan","email":"not-an-email","address":"123 Fictional St, Test City","items":[{"productId":1,"quantity":1}]}
+{"error":{"code":"INVALID_ORDER","message":"Check the customer and cart information.","details":{"formErrors":[],"fieldErrors":{"email":["Invalid email address"]}}}}
+[HTTP 422]
+
+### O3 short address + 1-char name
+$ curl -H Content-Type: application/json -X POST http://localhost:3000/api/orders -d {"customerName":"J","email":"j@example.com","address":"short","items":[{"productId":1,"quantity":1}]}
+{"error":{"code":"INVALID_ORDER","message":"Check the customer and cart information.","details":{"formErrors":[],"fieldErrors":{"customerName":["Too small: expected string to have >=2 characters"],"address":["Too small: expected string to have >=10 characters"]}}}}
+[HTTP 422]
+
+### O4 empty cart
+$ curl -H Content-Type: application/json -X POST http://localhost:3000/api/orders -d {"customerName":"Juan","email":"j@example.com","address":"123 Fictional St, Test City","items":[]}
+{"error":{"code":"INVALID_ORDER","message":"Check the customer and cart information.","details":{"formErrors":[],"fieldErrors":{"items":["Too small: expected array to have >=1 items"]}}}}
+[HTTP 422]
+
+### O5 quantity 0
+$ curl -H Content-Type: application/json -X POST http://localhost:3000/api/orders -d {"customerName":"Juan","email":"j@example.com","address":"123 Fictional St, Test City","items":[{"productId":1,"quantity":0}]}
+{"error":{"code":"INVALID_ORDER","message":"Check the customer and cart information.","details":{"formErrors":[],"fieldErrors":{"items":["Too small: expected number to be >=1"]}}}}
+[HTTP 422]
+
+### O6 unknown product
+$ curl -H Content-Type: application/json -X POST http://localhost:3000/api/orders -d {"customerName":"Juan","email":"j@example.com","address":"123 Fictional St, Test City","items":[{"productId":999,"quantity":1}]}
+{"error":{"code":"PRODUCT_UNAVAILABLE","message":"One or more products are unavailable."}}
+[HTTP 422]
+
+### O7 duplicate line
+$ curl -H Content-Type: application/json -X POST http://localhost:3000/api/orders -d {"customerName":"Juan","email":"j@example.com","address":"123 Fictional St, Test City","items":[{"productId":1,"quantity":1},{"productId":1,"quantity":1}]}
+{"error":{"code":"INVALID_ORDER","message":"Check the customer and cart information.","details":{"formErrors":[],"fieldErrors":{"items":["Each product may appear only once in an order."]}}}}
+[HTTP 422]
+
+webcam stock before: 6
+### ST1 more than stock (webcam qty 7)
+$ curl -H Content-Type: application/json -X POST http://localhost:3000/api/orders -d {"customerName":"Juan","email":"j@example.com","address":"123 Fictional St, Test City","items":[{"productId":4,"quantity":7}]}
+{"error":{"code":"INSUFFICIENT_STOCK","message":"Only 6 unit(s) of 1080p Webcam are available."}}
+[HTTP 409]
+
+webcam stock after: 6
+### M1 malformed JSON
+$ curl -H Content-Type: application/json -X POST http://localhost:3000/api/orders -d {"customerName": 
+{"error":{"code":"INTERNAL_ERROR","message":"Unexpected end of JSON input"}}
+[HTTP 400]
+
+### M2 unknown route
+$ curl http://localhost:3000/api/nope
+{"error":{"code":"ROUTE_NOT_FOUND","message":"API route could not be found."}}
+[HTTP 404]
+
+orders after: 1

@@ -1,0 +1,11 @@
+### DB down: GET /health
+{"status":"ok"}
+[HTTP 200] 0.001536s
+### DB down: GET /products
+{"error":{"code":"P1017","message":"The server could not complete the request.","traceId":"b453c2bc-11b5-4fd5-ba24-036ba166b14b"}}
+[HTTP 500] 0.005245s
+### DB down: assistant
+{"error":{"code":"P1017","message":"The server could not complete the request.","traceId":"e7d842a0-ecd1-4747-9ae1-77e17c641afd"}}
+[HTTP 500] 0.003427s
+### DB back: products
+[HTTP 500]

@@ -1,0 +1,5 @@
+"The Wireless Mouse is free today." -> {"ok":true,"facts":[{"id":1,"name":"Wireless Mouse","category":"Accessories","description":"Quiet wireless mouse with adjustable sensitivity and USB receiver.","price":650,"stock":12}]}
+"The Wireless Mouse costs nothing for students." -> {"ok":true,"facts":[{"id":1,"name":"Wireless Mouse","category":"Accessories","description":"Quiet wireless mouse with adjustable sensitivity and USB receiver.","price":650,"stock":12}]}
+"Get the Wireless Mouse at half price!" -> {"ok":true,"facts":[{"id":1,"name":"Wireless Mouse","category":"Accessories","description":"Quiet wireless mouse with adjustable sensitivity and USB receiver.","price":650,"stock":12}]}
+"The Wireless Mouse is ₱650 and comes with a free gift." -> {"ok":true,"facts":[{"id":1,"name":"Wireless Mouse","category":"Accessories","description":"Quiet wireless mouse with adjustable sensitivity and USB receiver.","price":650,"stock":12}]}
+"The Wireless Mouse (₱650) is a great pick." -> {"ok":true,"facts":[{"id":1,"name":"Wireless Mouse","category":"Accessories","description":"Quiet wireless mouse with adjustable sensitivity and USB receiver.","price":650,"stock":12}]}

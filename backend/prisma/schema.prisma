@@ -21,8 +21,36 @@ model Product {
   orderItems  OrderItem[]
 }
 
+// Week 6 (AWS release): customer accounts and order ownership.
+model User {
+  id           Int       @id @default(autoincrement())
+  email        String    @unique
+  name         String
+  passwordHash String
+  createdAt    DateTime  @default(now())
+  orders       Order[]
+  sessions     Session[]
+}
+
+// A sign-in session. Only a SHA-256 hash of the cookie token is stored, so a database
+// leak does not give away usable session cookies.
+model Session {
+  id        Int      @id @default(autoincrement())
+  tokenHash String   @unique
+  userId    Int
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
 model Order {
   id           Int         @id @default(autoincrement())
+  // Owner of the order. Optional so orders placed before sign-in existed are kept by the
+  // migration; those older orders have no owner and no customer can read them through the API.
+  userId       Int?
+  user         User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
   customerName String
   email        String
   address      String
@@ -30,6 +58,8 @@ model Order {
   total        Decimal     @db.Decimal(10, 2)
   createdAt    DateTime    @default(now())
   items        OrderItem[]
+
+  @@index([userId])
 }
 
 model OrderItem {

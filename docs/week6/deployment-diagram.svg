@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#334155"/></marker></defs>
+<rect x="0" y="0" width="1200" height="640" fill="#fff"/>
+<text x="40" y="38" font-size="24" font-weight="700" fill="#0f172a">ShopSmart staging deployment (planned)</text>
+<text x="40" y="66" font-size="14" fill="#475569">Solid arrows cross the public internet over HTTPS · dashed arrow is a private connection · grey boxes list each service's configuration</text>
+<!-- browser -->
+<rect x="40" y="110" width="220" height="120" rx="14" fill="#f1f5f9" stroke="#334155" stroke-width="2"/>
+<text x="150" y="150" text-anchor="middle" font-size="18" font-weight="700" fill="#0f172a">Browser</text>
+<text x="150" y="175" text-anchor="middle" font-size="13" fill="#334155">tester / instructor</text>
+<text x="150" y="196" text-anchor="middle" font-size="13" fill="#334155">fictional data only</text>
+<!-- frontend -->
+<rect x="390" y="110" width="300" height="120" rx="14" fill="#ecfdf5" stroke="#0f766e" stroke-width="2"/>
+<text x="540" y="148" text-anchor="middle" font-size="18" font-weight="700" fill="#0f172a">Hosted frontend (static)</text>
+<text x="540" y="172" text-anchor="middle" font-size="13" fill="#334155">Vite build: frontend/dist</text>
+<text x="540" y="194" text-anchor="middle" font-size="13" fill="#334155">https://shopsmart-web.&lt;host&gt;</text>
+<rect x="390" y="240" width="300" height="70" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="402" y="262" font-size="12.5" fill="#334155">Build-time PUBLIC config only:</text>
+<text x="402" y="282" font-size="12.5" fill="#0f172a" font-family="monospace">VITE_API_URL=https://shopsmart-api.&lt;host&gt;/api</text>
+<text x="402" y="300" font-size="12.5" fill="#334155">SPA rewrite: /* → /index.html</text>
+<!-- api -->
+<rect x="820" y="110" width="340" height="120" rx="14" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+<text x="990" y="148" text-anchor="middle" font-size="18" font-weight="700" fill="#0f172a">Express API (Node 22)</text>
+<text x="990" y="172" text-anchor="middle" font-size="13" fill="#334155">npm start → backend/src/server.js</text>
+<text x="990" y="194" text-anchor="middle" font-size="13" fill="#334155">https://shopsmart-api.&lt;host&gt;/api/health</text>
+<rect x="820" y="240" width="340" height="150" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
+<text x="832" y="262" font-size="12.5" fill="#334155">SECRET env vars (host dashboard only):</text>
+<text x="832" y="282" font-size="12.5" fill="#0f172a" font-family="monospace">DATABASE_URL  GEMINI_API_KEY</text>
+<text x="832" y="304" font-size="12.5" fill="#334155">Non-secret env vars:</text>
+<text x="832" y="324" font-size="12.5" fill="#0f172a" font-family="monospace">NODE_ENV=production  PORT</text>
+<text x="832" y="344" font-size="12.5" fill="#0f172a" font-family="monospace">FRONTEND_URL=https://shopsmart-web.&lt;host&gt;</text>
+<text x="832" y="364" font-size="12.5" fill="#0f172a" font-family="monospace">TRUST_PROXY=1  AI_PROVIDER  GEMINI_MODEL</text>
+<text x="832" y="382" font-size="12.5" fill="#0f172a" font-family="monospace">AI_TIMEOUT_MS=8000</text>
+<!-- db -->
+<rect x="820" y="460" width="340" height="120" rx="14" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+<text x="990" y="498" text-anchor="middle" font-size="18" font-weight="700" fill="#0f172a">Managed PostgreSQL 16</text>
+<text x="990" y="522" text-anchor="middle" font-size="13" fill="#334155">same provider and region as the API</text>
+<text x="990" y="544" text-anchor="middle" font-size="13" fill="#334155">schema via prisma migrate deploy</text>
+<!-- ai -->
+<rect x="390" y="460" width="300" height="120" rx="14" fill="#faf5ff" stroke="#7e22ce" stroke-width="2"/>
+<text x="540" y="498" text-anchor="middle" font-size="18" font-weight="700" fill="#0f172a">Google Gemini API</text>
+<text x="540" y="522" text-anchor="middle" font-size="13" fill="#334155">optional: key in x-goog-api-key header</text>
+<text x="540" y="544" text-anchor="middle" font-size="13" fill="#334155">receives product facts + question only</text>
+<!-- arrows -->
+<line x1="260" y1="150" x2="388" y2="150" stroke="#334155" stroke-width="2.5" marker-end="url(#a)"/>
+<text x="324" y="140" text-anchor="middle" font-size="12" fill="#334155">① HTTPS</text>
+<text x="324" y="170" text-anchor="middle" font-size="11" fill="#64748b">loads HTML/JS</text>
+<polyline points="150,110 150,92 990,92 990,108" fill="none" stroke="#334155" stroke-width="2.5" marker-end="url(#a)"/>
+<rect x="300" y="82" width="430" height="20" fill="#fff"/>
+<text x="515" y="97" text-anchor="middle" font-size="12.5" fill="#334155">② HTTPS fetch /api/* (CORS: Origin must equal FRONTEND_URL)</text>
+<line x1="990" y1="390" x2="990" y2="458" stroke="#334155" stroke-width="2.5" stroke-dasharray="7 6" marker-end="url(#a)"/>
+<text x="980" y="430" text-anchor="end" font-size="12" fill="#334155">③ private network, TLS</text>
+<line x1="820" y1="380" x2="694" y2="462" stroke="#334155" stroke-width="2.5" marker-end="url(#a)"/>
+<text x="770" y="440" font-size="12" fill="#334155">④ HTTPS</text>
+<text x="770" y="456" font-size="11" fill="#64748b">API → AI</text>
+<text x="40" y="620" font-size="13" fill="#475569">The browser never talks to PostgreSQL or Gemini directly. No secret is present in the frontend build or the repository.</text>
+</svg></body></html>

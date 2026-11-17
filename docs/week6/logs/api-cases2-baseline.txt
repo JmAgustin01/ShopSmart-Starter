@@ -1,0 +1,40 @@
+### C1 concurrency: 4 parallel orders of 2 webcams (stock 6)
+order 3 -> HTTP 201
+order 2 -> HTTP 201
+order 1 -> HTTP 201
+order 4 -> HTTP 409
+webcam stock now: 0; webcam orders: 3
+### AS1 supported question
+{"answer":"Based on the current ShopSmart catalog, the Compact Mechanical Keyboard (₱1,850, 7 in stock) matches your request. Hot-swappable compact keyboard with tactile switches.","recommendedProducts":[{"id":2,"name":"Compact Mechanical Keyboard","price":1850,"category":"Accessories","stock":7}],"sources":[{"type":"product","id":2,"name":"Compact Mechanical Keyboard","price":1850,"url":"/products/2"}],"mode":"rules","notice":"AI phrasing is turned off on this server, so this answer was built directly from the ShopSmart catalog."}
+[HTTP 200] 0.026249s
+
+### AS2 no match
+{"answer":"I could not find an in-stock product in the current ShopSmart catalog that matches your request. Try the Products page or ask about another item.","recommendedProducts":[],"sources":[],"mode":"no_match","notice":null}
+[HTTP 200] 0.003656s
+
+### AS3 over budget
+{"answer":"I found matching products, but none are in stock at or below ₱500. You could try a higher budget.","recommendedProducts":[],"sources":[],"mode":"no_match","notice":null}
+[HTTP 200] 0.003192s
+
+### AS4 out of stock (webcam now 0)
+{"answer":"A product matching your request is in the ShopSmart catalog, but it is currently out of stock, so I cannot recommend it right now.","recommendedProducts":[],"sources":[],"mode":"no_match","notice":null}
+[HTTP 200] 0.002994s
+
+### AS5 too short
+{"error":{"code":"INVALID_QUESTION","message":"Question must contain between 3 and 300 characters."}}
+[HTTP 422] 0.001205s
+
+### AS6 injection
+{"answer":"Based on the current ShopSmart catalog, the Wireless Mouse (₱650, 10 in stock) matches your request. Quiet wireless mouse with adjustable sensitivity and USB receiver.","recommendedProducts":[{"id":1,"name":"Wireless Mouse","price":650,"category":"Accessories","stock":10}],"sources":[{"type":"product","id":1,"name":"Wireless Mouse","price":650,"url":"/products/1"}],"mode":"rules","notice":"AI phrasing is turned off on this server, so this answer was built directly from the ShopSmart catalog."}
+[HTTP 200] 0.003368s
+
+### AS7 vague
+{"answer":"Based on the current ShopSmart catalog, consider: Wireless Mouse (₱650), USB-C Study Lamp (₱900), Laptop Stand (₱1,200). All are currently in stock.","recommendedProducts":[{"id":1,"name":"Wireless Mouse","price":650,"category":"Accessories","stock":10},{"id":3,"name":"USB-C Study Lamp","price":900,"category":"Study","stock":10},{"id":5,"name":"Laptop Stand","price":1200,"category":"Study","stock":9}],"sources":[{"type":"product","id":1,"name":"Wireless Mouse","price":650,"url":"/products/1"},{"type":"product","id":3,"name":"USB-C Study Lamp","price":900,"url":"/products/3"},{"type":"product","id":5,"name":"Laptop Stand","price":1200,"url":"/products/5"}],"mode":"rules","notice":"AI phrasing is turned off on this server, so this answer was built directly from the ShopSmart catalog."}
+[HTTP 200] 0.003387s
+
+### CORS dev, evil origin
+(no Access-Control-Allow-Origin header -> browser blocks)
+### CORS dev, localhost:3001
+Access-Control-Allow-Origin: http://localhost:3001
+### assistant status
+{"provider":"gemini","model":"gemini-3.8-flash","keyConfigured":false,"timeoutMs":8000,"last":{"at":"2026-11-16T06:39:44.582Z","result":"fallback: not_configured","detail":"GEMINI_API_KEY is not set."}}

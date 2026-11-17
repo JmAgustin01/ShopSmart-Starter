@@ -1,13 +1,26 @@
-import { useState } from 'react';
+// frontend/src/pages/CheckoutPage.jsx
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext.jsx';
 import StatusMessage from '../components/StatusMessage.jsx';
 import { useCart } from '../context/CartContext.jsx';
 import { api } from '../services/api.js';
+// Reuse the subtotal rule the cart total already uses (price x quantity).
+import { calculateItemSubtotal } from '../utils/cart.js';
+import { formatOrderError } from '../utils/orderErrors.js';
 
 export default function CheckoutPage() {
+  // "cart" and "total" come straight from the shared cart.
+  // This page does not keep its own copy of the items.
   const { cart, total, clearCart } = useCart();
-  const [form, setForm] = useState({ customerName: '', email: '', address: '' });
+  const { user, checking } = useAuth();
+  // Prefill from the account; the shopper can still change the delivery name and email.
+  const [form, setForm] = useState({ customerName: user?.name || '', email: user?.email || '', address: '' });
   const [submitting, setSubmitting] = useState(false);
+  // The sign-in check may finish after the first render; fill empty fields once it does.
+  useEffect(() => {
+    if (user) setForm((current) => ({ ...current, customerName: current.customerName || user.name, email: current.email || user.email }));
+  }, [user]);
   const [error, setError] = useState('');
   const [order, setOrder] = useState(null);
 
@@ -27,7 +40,7 @@ export default function CheckoutPage() {
       setOrder(created);
       clearCart();
     } catch (caught) {
-      setError(caught.message);
+      setError(formatOrderError(caught));
     } finally {
       setSubmitting(false);
     }
@@ -39,11 +52,21 @@ export default function CheckoutPage() {
       <h1>Thank you, {order.customerName}!</h1>
       <p>Your simulated order number is <strong>#{order.id}</strong>.</p>
       <p>Total: <strong>₱{Number(order.total).toLocaleString('en-PH', { minimumFractionDigits: 2 })}</strong></p>
-      <Link className="button" to="/">Continue shopping</Link>
+      <Link className="button" to="/">Continue shopping</Link> <Link to="/account">View my orders</Link>
     </section>
   );
 
   if (cart.length === 0) return <section><div className="empty-state"><h1>Your cart is empty</h1><Link className="button" to="/">Browse products</Link></div></section>;
+
+  if (checking) return <StatusMessage>Checking your sign-in…</StatusMessage>;
+  // The API refuses orders from guests (401). This message just explains it before they type.
+  if (!user) return (
+    <section><div className="empty-state">
+      <h1>Sign in to check out</h1>
+      <p>Your cart is kept while you sign in or create an account.</p>
+      <Link className="button" to="/login?next=/checkout">Sign in or create an account</Link>
+    </div></section>
+  );
 
   return (
     <section className="checkout-layout">
@@ -55,7 +78,19 @@ export default function CheckoutPage() {
         <label>Delivery address<textarea name="address" value={form.address} onChange={updateField} minLength="10" maxLength="300" required /></label>
         <button disabled={submitting}>{submitting ? 'Submitting order…' : 'Place simulated order'}</button>
       </form>
-      <aside className="summary"><h2>Amount due</h2><p className="summary-total"><span>Total</span><strong>₱{total.toLocaleString('en-PH')}</strong></p><small>No actual payment will be collected.</small></aside>
+      <aside className="summary">
+        <h2>Order review</h2>
+        {/* One row per cart item: name, quantity, and line subtotal.
+            key={item.productId} lets React tell the rows apart. */}
+        {cart.map((item) => (
+          <p key={item.productId}>
+            <span>{item.name} × {item.quantity}</span>
+            <strong>₱{calculateItemSubtotal(item).toLocaleString('en-PH')}</strong>
+          </p>
+        ))}
+        <p className="summary-total"><span>Total</span><strong>₱{total.toLocaleString('en-PH')}</strong></p>
+        <small>No actual payment will be collected.</small>
+      </aside>
     </section>
   );
 }

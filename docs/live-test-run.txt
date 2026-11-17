@@ -1,0 +1,70 @@
+=== DB at test time
+ id |            name             |  price  | stock | active 
+----+-----------------------------+---------+-------+--------
+  1 | Wireless Mouse              |  650.00 |    11 | t
+  2 | Compact Mechanical Keyboard | 1850.00 |     8 | t
+  3 | USB-C Study Lamp            |  900.00 |    10 | t
+  4 | 1080p Webcam                | 1450.00 |     6 | t
+  5 | Laptop Stand                | 1200.00 |     9 | t
+  6 | USB Headset                 | 1350.00 |     7 | t
+(6 rows)
+
+=== BASELINE (original starter) keyboard
+{"answer":"Based on the current ShopSmart catalog, consider: Compact Mechanical Keyboard, Wireless Mouse, USB-C Study Lamp. This starter response uses rules rather than a generative AI model.","recommendedProducts":[{"id":2,"name":"Compact Mechanical Keyboard","price":1850,"category":"Accessories"},{"id":1,"name":"Wireless Mouse","price":650,"category":"Accessories"},{"id":3,"name":"USB-C Study Lamp","price":900,"category":"Study"}],"sources":[{"type":"product","id":2,"name":"Compact Mechanical Keyboard"},{"type":"product","id":1,"name":"Wireless Mouse"},{"type":"product","id":3,"name":"USB-C Study Lamp"}]}
+[HTTP 200, 0.092256s]
+=== BASELINE (original starter) drones
+{"answer":"Based on the current ShopSmart catalog, consider: Wireless Mouse, USB-C Study Lamp, Laptop Stand. This starter response uses rules rather than a generative AI model.","recommendedProducts":[{"id":1,"name":"Wireless Mouse","price":650,"category":"Accessories"},{"id":3,"name":"USB-C Study Lamp","price":900,"category":"Study"},{"id":5,"name":"Laptop Stand","price":1200,"category":"Study"}],"sources":[{"type":"product","id":1,"name":"Wireless Mouse"},{"type":"product","id":3,"name":"USB-C Study Lamp"},{"type":"product","id":5,"name":"Laptop Stand"}]}
+[HTTP 200, 0.003368s]
+=== BASELINE (original starter) 1080p webcam
+{"answer":"Based on the current ShopSmart catalog, consider: Wireless Mouse, USB-C Study Lamp. This starter response uses rules rather than a generative AI model.","recommendedProducts":[{"id":1,"name":"Wireless Mouse","price":650,"category":"Accessories"},{"id":3,"name":"USB-C Study Lamp","price":900,"category":"Study"}],"sources":[{"type":"product","id":1,"name":"Wireless Mouse"},{"type":"product","id":3,"name":"USB-C Study Lamp"}]}
+[HTTP 200, 0.003149s]
+=== 1 catalog match
+{"answer":"The Compact Mechanical Keyboard fits your request at ₱1,850. Hot-swappable compact keyboard with tactile switches. It is currently in stock.","recommendedProducts":[{"id":2,"name":"Compact Mechanical Keyboard","price":1850,"category":"Accessories","stock":8}],"sources":[{"type":"product","id":2,"name":"Compact Mechanical Keyboard","price":1850,"url":"/products/2"}],"mode":"ai","notice":null}
+[HTTP 200, 0.107188s]
+=== 2 no match
+{"answer":"I could not find an in-stock product in the current ShopSmart catalog that matches your request. Try the Products page or ask about another item.","recommendedProducts":[],"sources":[],"mode":"no_match","notice":null}
+[HTTP 200, 0.003220s]
+=== 3 invalid input
+{"error":{"code":"INVALID_QUESTION","message":"Question must contain between 3 and 300 characters."}}
+[HTTP 422, 0.001760s]
+=== 4 availability: add stock-0 fixture
+fixture id=34 (₱999, stock 0)
+{"answer":"The Compact Mechanical Keyboard fits your request at ₱1,850. Hot-swappable compact keyboard with tactile switches. It is currently in stock.","recommendedProducts":[{"id":2,"name":"Compact Mechanical Keyboard","price":1850,"category":"Accessories","stock":8}],"sources":[{"type":"product","id":2,"name":"Compact Mechanical Keyboard","price":1850,"url":"/products/2"}],"mode":"ai","notice":null}
+[HTTP 200, 0.006364s]
+{"answer":"The Compact Mechanical Keyboard fits your request at ₱1,850. Hot-swappable compact keyboard with tactile switches. It is currently in stock.","recommendedProducts":[{"id":2,"name":"Compact Mechanical Keyboard","price":1850,"category":"Accessories","stock":8}],"sources":[{"type":"product","id":2,"name":"Compact Mechanical Keyboard","price":1850,"url":"/products/2"}],"mode":"ai","notice":null}
+[HTTP 200, 0.009687s]
+fixture deleted; product count = 6
+=== 5a provider unavailable (unreachable URL)
+{"answer":"Based on the current ShopSmart catalog, the Compact Mechanical Keyboard (₱1,850, 8 in stock) matches your request. Hot-swappable compact keyboard with tactile switches.","recommendedProducts":[{"id":2,"name":"Compact Mechanical Keyboard","price":1850,"category":"Accessories","stock":8}],"sources":[{"type":"product","id":2,"name":"Compact Mechanical Keyboard","price":1850,"url":"/products/2"}],"mode":"rules","notice":"The AI writer is unavailable right now, so this answer was built directly from the ShopSmart catalog."}
+[HTTP 200, 0.092720s]
+=== 5b provider timeout (hanging server, 3 s limit)
+{"answer":"Based on the current ShopSmart catalog, the Compact Mechanical Keyboard (₱1,850, 8 in stock) matches your request. Hot-swappable compact keyboard with tactile switches.","recommendedProducts":[{"id":2,"name":"Compact Mechanical Keyboard","price":1850,"category":"Accessories","stock":8}],"sources":[{"type":"product","id":2,"name":"Compact Mechanical Keyboard","price":1850,"url":"/products/2"}],"mode":"rules","notice":"The AI writer took too long to respond, so this answer was built directly from the ShopSmart catalog."}
+[HTTP 200, 3.080741s]
+=== 6 source check
+"Which keyboard is below ₱2,000?" -> id 2 shown ₱1850 | DB: Compact Mechanical Keyboard price=1850.00 stock=8 active=true | GET /api/products/2 -> 200
+"Which keyboard is below ₱2,000?" -> id 2 shown ₱1850 | DB: Compact Mechanical Keyboard price=1850.00 stock=8 active=true | GET /api/products/2 -> 200
+"something for video calls" -> id 4 shown ₱1450 | DB: 1080p Webcam price=1450.00 stock=6 active=true | GET /api/products/4 -> 200
+"something for video calls" -> id 4 shown ₱1450 | DB: 1080p Webcam price=1450.00 stock=6 active=true | GET /api/products/4 -> 200
+"study items under 1500" -> id 3 shown ₱900 | DB: USB-C Study Lamp price=900.00 stock=10 active=true | GET /api/products/3 -> 200
+"study items under 1500" -> id 3 shown ₱900 | DB: USB-C Study Lamp price=900.00 stock=10 active=true | GET /api/products/3 -> 200
+=== rate limit (21+ requests in a minute)
+last HTTP 200: {"answer":"Based on the current ShopSmart catalog, the Compact Mechanical Keyboard (₱1,850, 8 in stock) matches your request. Hot-swappable compact keyboard with tactile switches.","recommendedProducts":[{"id":2,"name":"Compact Mechanical Keyboard","price":1850,"category":"Accessories","stock":8}],"sources":[{"type":"product","id":2,"name":"Compact Mechanical Keyboard","price":1850,"url":"/products/2"}],"mode":"rules","notice":"The AI writer took too long to respond, so this answer was built directly from the ShopSmart catalog."}
+=== server logs (key must not appear)
+      1 POST /api/assistant/questions 200 2.133 ms
+      1 POST /api/assistant/questions 200 4.680 ms
+      1 POST /api/assistant/questions 200 5.094 ms
+      1 POST /api/assistant/questions 200 5.117 ms
+      1 POST /api/assistant/questions 200 5.281 ms
+      1 POST /api/assistant/questions 200 5.699 ms
+      1 POST /api/assistant/questions 200 86.056 ms
+      1 POST /api/assistant/questions 200 99.607 ms
+      1 POST /api/assistant/questions 422 0.557 ms
+      1 [assistant] provider fallback: unavailable (Provider could not be reached.)
+<logs>/api-base.log:0
+<logs>/api-fail.log:0
+<logs>/api-ok.log:0
+<logs>/api-timeout.log:0
+=== rate limit: request 22 -> HTTP 429: {"error":{"code":"RATE_LIMITED","message":"Too many questions in a short time. Please wait a minute and try again."}}
+product cards: 6
+search keyboard -> 1 card(s)
+checkout -> ORDER RECEIVEDThank you, Test Student!Your simulated order number is #34.Total: ₱650.00Continue shopping

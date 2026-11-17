@@ -12,6 +12,16 @@ const products = [
 ];
 
 async function main() {
+  // This seed deletes every order and product. On staging/production (NODE_ENV=production) it may
+  // only fill an empty, freshly migrated database; it refuses once any order exists.
+  if (process.env.NODE_ENV === 'production') {
+    const orders = await prisma.order.count();
+    if (orders > 0) {
+      console.error(`Refusing to seed: NODE_ENV=production and ${orders} order(s) exist. The seed would delete them.`);
+      process.exitCode = 1;
+      return;
+    }
+  }
   await prisma.orderItem.deleteMany();
   await prisma.order.deleteMany();
   await prisma.product.deleteMany();

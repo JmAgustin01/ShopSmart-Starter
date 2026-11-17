@@ -1,0 +1,12 @@
+### F1 unreachable provider
+{"answer":"Based on the current ShopSmart catalog, the Compact Mechanical Keyboard (₱1,850, 7 in stock) matches your request. Hot-swappable compact keyboard with tactile switches.","recommendedProducts":[{"id":2,"name":"Compact Mechanical Keyboard","price":1850,"category":"Accessories","stock":7}],"sources":[{"type":"product","id":2,"name":"Compact Mechanical Keyboard","price":1850,"url":"/products/2"}],"mode":"rules","notice":"The AI writer is unavailable right now, so this answer was built directly from the ShopSmart catalog."}
+[HTTP 200] 0.102174s
+### F2 hanging provider (3 s limit)
+{"answer":"Based on the current ShopSmart catalog, the Compact Mechanical Keyboard (₱1,850, 7 in stock) matches your request. Hot-swappable compact keyboard with tactile switches.","recommendedProducts":[{"id":2,"name":"Compact Mechanical Keyboard","price":1850,"category":"Accessories","stock":7}],"sources":[{"type":"product","id":2,"name":"Compact Mechanical Keyboard","price":1850,"url":"/products/2"}],"mode":"rules","notice":"The AI writer took too long to respond, so this answer was built directly from the ShopSmart catalog."}
+[HTTP 200] 3.089475s
+### F3 status endpoint (key must not appear)
+{"provider":"gemini","model":"gemini-3.8-flash","keyConfigured":true,"timeoutMs":3000,"last":{"at":"2026-11-16T06:41:22.248Z","result":"fallback: unavailable","detail":"Provider could not be reached."}}
+### CORS production: allowed origin
+Access-Control-Allow-Origin: https://shopsmart-staging.example
+### CORS production: localhost origin
+(refused: no ACAO header)
