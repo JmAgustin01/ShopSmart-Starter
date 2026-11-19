@@ -13,6 +13,9 @@ APP_DIR=/opt/shopsmart/app
 export DEBIAN_FRONTEND=noninteractive
 # Retry package downloads: a mirror briefly answering 503 once stopped a whole setup (found 19 Nov 2026).
 echo 'Acquire::Retries "8";' > /etc/apt/apt.conf.d/80-retries
+# During the 19 Nov 2026 Ubuntu archive outage every *.ec2.archive.ubuntu.com mirror answered 503 while
+# azure.archive.ubuntu.com kept working, so packages come from that mirror (same packages, same signatures).
+sed -i -E 's#http://[A-Za-z0-9.-]*(archive|security)\.ubuntu\.com/ubuntu/?#http://azure.archive.ubuntu.com/ubuntu/#g' /etc/apt/sources.list.d/ubuntu.sources 2>/dev/null || true
 apt_retry() { for n in 1 2 3; do apt-get "$@" && return 0; sleep 20; apt-get update || true; done; return 1; }
 
 # 1 GB t3.micro needs swap for npm install and the Vite build.
