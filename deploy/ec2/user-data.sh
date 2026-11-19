@@ -11,19 +11,22 @@ BRANCH="aws-release"
 APP_DIR=/opt/shopsmart/app
 
 export DEBIAN_FRONTEND=noninteractive
+# Retry package downloads: a mirror briefly answering 503 once stopped a whole setup (found 19 Nov 2026).
+echo 'Acquire::Retries "8";' > /etc/apt/apt.conf.d/80-retries
+apt_retry() { for n in 1 2 3; do apt-get "$@" && return 0; sleep 20; apt-get update || true; done; return 1; }
 
 # 1 GB t3.micro needs swap for npm install and the Vite build.
 if [ ! -f /swapfile ]; then fallocate -l 2G /swapfile; chmod 600 /swapfile; mkswap /swapfile; swapon /swapfile; echo '/swapfile none swap sw 0 0' >> /etc/fstab; fi
 
-apt-get update
-apt-get install -y ca-certificates curl gnupg git debian-keyring debian-archive-keyring apt-transport-https postgresql
+apt_retry update
+apt_retry install -y ca-certificates curl gnupg git debian-keyring debian-archive-keyring apt-transport-https postgresql
 # Node.js 22 (Ubuntu's own package is too old for Vite 7 / Prisma 6)
 curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
-apt-get install -y nodejs
+apt_retry install -y nodejs
 # Caddy (official repository)
 curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
 curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' > /etc/apt/sources.list.d/caddy-stable.list
-apt-get update && apt-get install -y caddy
+apt_retry update && apt_retry install -y caddy
 
 # Public hostname: <public-ip-with-dashes>.sslip.io resolves to this instance, so Caddy can get a certificate.
 TOKEN=$(curl -sX PUT http://169.254.169.254/latest/api/token -H 'X-aws-ec2-metadata-token-ttl-seconds: 300')
